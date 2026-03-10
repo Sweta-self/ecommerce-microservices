@@ -29,4 +29,11 @@ public class InventoryController {
                             @RequestParam int quantity){
         inventoryService.reduceStock(productId, quantity);
     }
+    @PostMapping("/restore")
+    public void restoreStock(
+            @RequestParam Long productId,
+            @RequestParam int quantity
+    ){
+        inventoryService.restoreStock(productId,quantity);
+    }
 }

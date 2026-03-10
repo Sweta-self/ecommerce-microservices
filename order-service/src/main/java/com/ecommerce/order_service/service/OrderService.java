@@ -30,12 +30,19 @@ public class OrderService {
             throw new RuntimeException("Product out of stock");
         }
         //Reduce stock
-        inventoryClient.reduceStock(productId, quantity);
-        //save order
-        Order order=new Order();
-        order.setProductId(productId);
-        order.setQuantity(quantity);
-        order.setPrice(product.getPrice()*quantity);
-        return orderRepository.save(order);
+        try {
+            inventoryClient.reduceStock(productId, quantity);
+            //save order
+            Order order = new Order();
+            order.setProductId(productId);
+            order.setQuantity(quantity);
+            order.setPrice(product.getPrice() * quantity);
+            return orderRepository.save(order);
+        }
+        catch(Exception ex){
+            //compensation transaction
+            inventoryClient.restoreStock(productId, quantity);
+            throw new RuntimeException("Order failed,stock restored");
+        }
     }
 }

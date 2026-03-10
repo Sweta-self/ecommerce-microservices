@@ -25,4 +25,9 @@ public class InventoryService {
         inventory.setQuantity(inventory.getQuantity()-quantity);
         inventoryRepository.save(inventory);
     }
+    public void restoreStock(Long productId,int quantity){
+        Inventory inventory=inventoryRepository.findByProductId(productId);
+        inventory.setQuantity(inventory.getQuantity()+quantity);
+        inventoryRepository.save(inventory);
+    }
 }

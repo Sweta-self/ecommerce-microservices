@@ -14,4 +14,7 @@ public interface InventoryClient {
             @RequestParam Long productId,
             @RequestParam int quantity
     );
+    @PostMapping("/inventory/restore")
+    void restoreStock(@RequestParam Long productId,
+                      @RequestParam int quantity);
 }
