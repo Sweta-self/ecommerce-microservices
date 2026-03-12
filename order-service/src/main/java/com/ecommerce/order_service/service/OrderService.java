@@ -14,18 +14,21 @@ import org.springframework.stereotype.Service;
 public class OrderService {
 
     private final OrderRepository orderRepository;
-    private final ProductClient productClient;
+    private final ProductServiceClient productServiceClient;
     private final InventoryClient inventoryClient;
+    private final InventoryServiceClient inventoryServiceClient;
 
-    public Order placeOrder(Order order){
-        Product product=productClient.getProductById(order.getProductId());
-        return orderRepository.save(order);
-    }
+
+
+
+
+
+
     public Order createOrder(Long productId,int quantity){
         //product fetch
-        Product product=productClient.getProductById(productId);
+        Product product=productServiceClient.fetchProduct(productId);
         //stock check
-        boolean inStock= inventoryClient.checkStock(productId,quantity);
+        boolean inStock= inventoryServiceClient.checkInventory(productId,quantity);
         if(!inStock){
             throw new RuntimeException("Product out of stock");
         }
