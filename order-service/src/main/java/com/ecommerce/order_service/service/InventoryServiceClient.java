@@ -8,11 +8,13 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class InventoryServiceClient {
-    private final InventoryClient inventoryClient;
+
+    private final InventoryRetryService inventoryRetryService;
 
     @CircuitBreaker(name="inventoryService",fallbackMethod = "inventoryFallback")
     public boolean checkInventory(Long productId,int quantity){
-        return inventoryClient.checkStock(productId, quantity);
+        //internally retrservice method call
+        return inventoryRetryService.checkInventory(productId, quantity);
     }
     public boolean inventoryFallback(Long productId,int quantity, Exception ex){
         System.out.println("Inventory service down");
